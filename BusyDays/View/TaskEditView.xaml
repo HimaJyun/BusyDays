@@ -1,0 +1,28 @@
+﻿<Window x:Class="BusyDays.View.TaskAddView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BusyDays.View"
+        mc:Ignorable="d"
+        Title="タスクの更新" Height="300" Width="300"
+        Loaded="Window_Loaded" FocusManager.FocusedElement="{Binding ElementName=TextBox_Title}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Header="タイトル：" Margin="10">
+            <TextBox x:Name="TextBox_Title" Margin="5" Padding="0,2.5"
+                     Text="{Binding TaskTitle, UpdateSourceTrigger=PropertyChanged}"/>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="説明：" Margin="10,0,10,10">
+            <TextBox Margin="5" Padding="0,2.5" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+                     Text="{Binding TaskDescription, UpdateSourceTrigger=PropertyChanged}"/>
+        </GroupBox>
+        <Button Grid.Row="2" Margin="0,0,10,10" Content="完了" Padding="5,1" HorizontalAlignment="Right"
+                Command="{Binding OK}"/>
+    </Grid>
+</Window>

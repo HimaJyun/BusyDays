@@ -1,0 +1,104 @@
+﻿<Window x:Class="BusyDays.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BusyDays.View"
+        mc:Ignorable="d"
+        Title="BusyDays" Height="350" Width="525" MinWidth="200">
+    <!--xaml.csで実装
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>-->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="50"/>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition MinWidth="50" />
+        </Grid.ColumnDefinitions>
+        <GridSplitter Width="1" Grid.Column="1" HorizontalAlignment="Center" Focusable="False"/>
+        <GroupBox Header="現在のタスク" Margin="10,10,5,10" Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" Margin="5" Padding="0,2.5"
+                          Text="{Binding TaskTitle, UpdateSourceTrigger=PropertyChanged}"
+                         IsReadOnly="{Binding TaskExist}" IsEnabled="{Binding TaskNotExist}"/>
+                <TextBox Grid.Row="1" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+                          Text="{Binding TaskDescription, UpdateSourceTrigger=PropertyChanged}"
+                         IsReadOnly="{Binding TaskExist}" IsEnabled="{Binding TaskNotExist}"/>
+                <StackPanel Grid.Row="2" Margin="5" Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <Button Content="完了" Margin="0,0,10,0" Padding="5,1"
+                            IsEnabled="{Binding TaskNotExist}" Command="{Binding TaskDone}"/>
+                    <Button Content="後回し" Padding="5,1"
+                            IsEnabled="{Binding TaskNotExist}" Command="{Binding TaskPostpone}"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="タスクリスト" Margin="5,10,10,10" Grid.Column="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <ListBox Margin="5" Grid.Row="0" HorizontalContentAlignment="Stretch"
+                         SelectedItem="{Binding SelectedTask}" ItemsSource="{Binding TaskList}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}">
+                                <TextBlock.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBox}},
+                                                            Path=DataContext.TaskDoubleClick}"
+                                                  CommandParameter="{Binding}"/>
+                                </TextBlock.InputBindings>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="新しいタスクを追加" Command="{Binding TaskAdd}"/>
+                            <MenuItem Header="選択中のタスクを更新" Command="{Binding TaskUpdate}"/>
+                            <MenuItem Header="選択中のタスクを削除" Command="{Binding TaskRemove}"/>
+                            <Separator />
+                            <MenuItem Header="選択中のタスクを上に" Command="{Binding TaskUp}"/>
+                            <MenuItem Header="選択中のタスクを下に" Command="{Binding TaskDown}"/>
+                            <MenuItem Header="選択中のタスクを作業する" Command="{Binding TaskWork}"/>
+                            <Separator />
+                            <MenuItem Header="コピー(_C)" Command="{Binding TaskCopy}"/>
+                            <MenuItem Header="貼り付け(_P)" Command="{Binding TaskPaste}"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                    <ListBox.InputBindings>
+                        <KeyBinding Key="Delete" Command="{Binding TaskRemove}" />
+                        <KeyBinding Key="Enter" Command="{Binding TaskWork}"/>
+                        <KeyBinding Gesture="Ctrl+C" Command="{Binding TaskCopy}"/>
+                        <KeyBinding Gesture="Ctrl+V" Command="{Binding TaskPaste}"/>
+                    </ListBox.InputBindings>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="listBoxItem_PreviewMouseLeftButtonDown"/>
+                            <EventSetter Event="PreviewMouseMove" Handler="listBoxItem_PreviewMouseMove" />
+                            <EventSetter Event="Drop" Handler="listBoxItem_Drop" />
+                            <Setter Property="AllowDrop" Value="True" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+                <StackPanel Grid.Row="1" Margin="0,5,5,5" Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <Button Content="削除" Margin="0,0,10,0" Padding="5,1"
+                            Command="{Binding TaskRemove}"/>
+                    <Button Content="追加" Padding="5,1"
+                            Command="{Binding TaskAdd}"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+    </Grid>
+    <Window.InputBindings>
+        <KeyBinding Key="Insert" Command="{Binding TaskAdd}" />
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding TaskSave}" />
+    </Window.InputBindings>
+</Window>
+
