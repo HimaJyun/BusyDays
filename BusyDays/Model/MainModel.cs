@@ -141,6 +141,18 @@ namespace BusyDays.Model {
             }
         }
 
+        /// <summary>
+        /// タスクを更新します
+        /// </summary>
+        /// <param name="oldItem">古いタスク</param>
+        /// <param name="newItem">新しいタスク</param>
+        public void Update(TaskItem oldItem, TaskItem newItem) {
+            var index = ReferenceIndexOf(oldItem);
+            if (index != -1) {
+                TaskList[index] = newItem;
+            }
+        }
+
         private int ReferenceIndexOf(TaskItem item) {
             for (int i = 0, count = TaskList.Count; i < count; ++i) {
                 if (object.ReferenceEquals(item, TaskList[i])) {

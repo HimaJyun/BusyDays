@@ -94,8 +94,7 @@ namespace BusyDays.ViewModel {
                 var task = SelectedTask.Clone();
                 service.ShowDialog(new TaskAddView(task));
                 if (task.Title != null) {
-                    SelectedTask.Title = task.Title;
-                    SelectedTask.Description = task.Description;
+                    model.Update(SelectedTask, task);
                 }
             });
 
