@@ -45,7 +45,8 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <ListBox Margin="5" Grid.Row="0" HorizontalContentAlignment="Stretch"
-                         SelectedItem="{Binding SelectedTask}" ItemsSource="{Binding TaskList}">
+                         SelectedItem="{Binding SelectedTask}" ItemsSource="{Binding TaskList}"
+                         IsSynchronizedWithCurrentItem="True">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Title}">
