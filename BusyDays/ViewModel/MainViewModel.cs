@@ -26,7 +26,11 @@ namespace BusyDays.ViewModel {
         }
 
         public ObservableCollection<TaskItem> TaskList => model.TaskList;
-        public TaskItem SelectedTask { get; set; }
+        private TaskItem _selectedTask;
+        public TaskItem SelectedTask {
+            get { return _selectedTask; }
+            set { this._selectedTask = value; OnPropertyChanged(nameof(SelectedTask)); }
+        }
 
         public bool TaskExist => model.Task == null;
         public bool TaskNotExist => !TaskExist;
